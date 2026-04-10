@@ -54,10 +54,10 @@ export default function CadastroScreen() {
         {/* PRESTADOR */}
         <TouchableOpacity
           style={[styles.tipoBox, tipo === 'prestador' && styles.tipoAtivo]}
-          onPress={() => {
-            setTipo('prestador');
-            router.push('/prestador');
-          }}
+         onPress={() => {
+  setTipo('prestador');
+  router.push('/prestador?tipo=prestador');
+}}
         >
           <Text>Prestador de serviço</Text>
         </TouchableOpacity>
