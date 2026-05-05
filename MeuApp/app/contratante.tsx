@@ -1,7 +1,7 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useState } from 'react';
-import { db } from '../database/database';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { cadastrarUsuario } from '../database/userService';
 
 export default function CadastroScreen() {
   const router = useRouter();
@@ -20,10 +20,19 @@ export default function CadastroScreen() {
       return;
     }
 
-    db.runSync(
-      'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
-      [nome, email, senha]
-    );
+    const resultado = cadastrarUsuario({
+      nome,
+      email,
+      cpf,
+      senha,
+      tipo: 'contratante',
+      endereco
+    });
+
+    if (!resultado.sucesso) {
+      alert(resultado.mensagem);
+      return;
+    }
 
     alert('Conta criada 🔥');
     router.push('/');

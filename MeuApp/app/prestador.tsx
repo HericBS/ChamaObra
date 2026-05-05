@@ -1,6 +1,7 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { cadastrarUsuario } from '../database/userService';
 
 export default function PrestadorScreen() {
   const router = useRouter();
@@ -18,6 +19,22 @@ export default function PrestadorScreen() {
   const cadastrar = () => {
     if (senha !== confirmarSenha) {
       alert('As senhas não coincidem');
+      return;
+    }
+
+    const resultado = cadastrarUsuario({
+      nome,
+      email,
+      cpf,
+      senha,
+      tipo: 'prestador',
+      endereco,
+      servico,
+      experiencia
+    });
+
+    if (!resultado.sucesso) {
+      alert(resultado.mensagem);
       return;
     }
 
@@ -44,7 +61,7 @@ export default function PrestadorScreen() {
             styles.tipoBox,
             tipo === 'contratante' && styles.tipoAtivo
           ]}
-          onPress={() => router.push('/cadastro?tipo=contratante')}
+          onPress={() => router.push('/contratante?tipo=contratante')}
         >
           <Text>Contratante</Text>
         </TouchableOpacity>

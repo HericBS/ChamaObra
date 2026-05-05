@@ -1,64 +1,44 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
-import { db } from '../database/database';
-import { ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView
+} from 'react-native';
+
+import { useState } from 'react';
 import { useRouter } from 'expo-router';
-
-
-
-// criar tabela
-const createTable = () => {
-  db.execSync(`
-    CREATE TABLE IF NOT EXISTS usuarios (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      email TEXT,
-      senha TEXT
-    );
-  `);
-};
-
-// cadastrar
-const cadastrarUsuario = (email: string, senha: string) => {
-  db.runSync(
-    'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
-    [email, senha]
-  );
-};
-
-// login
-const loginUsuario = (email: string, senha: string) => {
-  const result = db.getAllSync(
-    'SELECT * FROM usuarios WHERE email = ? AND senha = ?',
-    [email, senha]
-  );
-
-  return result.length > 0;
-};
+import { loginUsuario } from '../database/authService';
 
 export default function LoginScreen() {
-  const [nome, setNome] = useState('');
+  const router = useRouter();
+
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  useEffect(() => {
-    createTable();
-  }, []);
-
   const handleLogin = () => {
-    const success = loginUsuario(email, senha);
+  const resultado = loginUsuario(email, senha);
 
-    if (success) {
-      alert('Login realizado 🔥');
-    } else {
-      alert('Email ou senha inválidos');
-    }
-  };
-  const router = useRouter();
+  if (!resultado.sucesso) {
+    alert(resultado.mensagem);
+    return;
+  }
 
+const usuario = resultado.usuario as any;
+
+  console.log(usuario); // 🔥 veja isso
+
+  if (usuario.tipo === 'prestador') {
+    router.replace('/homePrestador');
+  } else {
+    router.replace('/homeContratante');
+  }
+};
   return (
     <ScrollView contentContainerStyle={styles.container}>
 
-      {/* Logo */}
+      {/* HEADER */}
       <View style={styles.header}>
         <Text style={styles.logo}>🔥</Text>
         <Text style={styles.title}>ChamaObra</Text>
@@ -67,14 +47,14 @@ export default function LoginScreen() {
         </Text>
       </View>
 
-      {/* Form */}
+      {/* FORM */}
       <View style={styles.form}>
         <Text style={styles.sectionTitle}>Entrar</Text>
         <Text style={styles.helperText}>
           Acesse sua conta para continuar
         </Text>
 
-        {/* Email */}
+        {/* EMAIL */}
         <Text style={styles.label}>Email</Text>
         <TextInput
           placeholder="Digite seu email"
@@ -83,7 +63,7 @@ export default function LoginScreen() {
           onChangeText={setEmail}
         />
 
-        {/* Senha */}
+        {/* SENHA */}
         <Text style={styles.label}>Senha</Text>
         <TextInput
           placeholder="Digite sua senha"
@@ -93,37 +73,20 @@ export default function LoginScreen() {
           onChangeText={setSenha}
         />
 
+        {/* BOTÃO LOGIN */}
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
 
-        {/* Cadastro teste */}
-        <TouchableOpacity onPress={() => cadastrarUsuario(email, senha)}>
-          <Text style={{ textAlign: 'center', marginTop: 10 }}>
-            Cadastrar usuário (teste)
-          </Text>
-        </TouchableOpacity>
-
-        {/* OU */}
-        <View style={styles.dividerContainer}>
-          <View style={styles.line} />
-          <Text style={styles.dividerText}>OU</Text>
-          <View style={styles.line} />
-        </View>
-
-        {/* Google */}
-        <TouchableOpacity style={styles.googleButton}>
-          <Text style={styles.googleText}>Entrar com Google</Text>
-        </TouchableOpacity>
-
-        {/* Criar conta */}
+        {/* CRIAR CONTA */}
         <View style={styles.signupContainer}>
           <Text style={styles.signupText}>
             Ainda não tem uma conta?
           </Text>
-        <TouchableOpacity onPress={() => router.push('/cadastro')}>
-  <Text style={styles.signupLink}>Criar conta</Text>
-</TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.push('/contratante')}>
+            <Text style={styles.signupLink}>Criar conta</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -133,7 +96,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#fff',
     padding: 20,
   },
@@ -182,7 +145,6 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    borderStyle: 'dashed',
     borderRadius: 8,
     padding: 12,
     marginBottom: 10,
@@ -198,35 +160,6 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: '#fff',
-    fontWeight: 'bold',
-  },
-
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#ccc',
-  },
-
-  dividerText: {
-    marginHorizontal: 10,
-    color: 'gray',
-  },
-
-  googleButton: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-
-  googleText: {
     fontWeight: 'bold',
   },
 
