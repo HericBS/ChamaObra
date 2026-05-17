@@ -1,9 +1,11 @@
+import { useRouter } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Image } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { db } from '../database/database';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [prestadores, setPrestadores] = useState<any[]>([]);
   const [busca, setBusca] = useState('');
 
@@ -57,7 +59,10 @@ export default function HomeScreen() {
           Poste seu pedido e receba propostas
         </Text>
 
-        <TouchableOpacity style={styles.postButton}>
+        <TouchableOpacity
+          style={styles.postButton}
+          onPress={() => router.push('/postarServico')}
+        >
           <Text style={styles.postButtonText}>+ POSTAR UM PEDIDO</Text>
         </TouchableOpacity>
       </View>
@@ -121,7 +126,10 @@ export default function HomeScreen() {
       ))}
 
       {/* BOTÃO FLUTUANTE */}
-      <TouchableOpacity style={styles.fab}>
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => router.push('/postarServico')}
+      >
         <Text style={{ color: '#fff', fontSize: 24 }}>+</Text>
       </TouchableOpacity>
 

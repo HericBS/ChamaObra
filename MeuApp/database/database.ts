@@ -12,6 +12,25 @@ export const initDB = () => {
     );
   `);
 
+  // tabela de serviços
+  db.execSync(`
+    CREATE TABLE IF NOT EXISTS servicos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      clienteId INTEGER,
+      titulo TEXT,
+      descricao TEXT,
+      metragem TEXT,
+      categoria TEXT,
+      urgencia TEXT,
+      materiais TEXT,
+      endereco TEXT,
+      status TEXT DEFAULT 'EM_ANDAMENTO',
+      valor REAL,
+      criado_em TEXT,
+      FOREIGN KEY(clienteId) REFERENCES usuarios(id)
+    );
+  `);
+
   // pegar colunas existentes
   const colunas = db.getAllSync(`PRAGMA table_info(usuarios)`);
 

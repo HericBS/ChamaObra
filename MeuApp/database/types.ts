@@ -17,3 +17,18 @@ export interface Usuario {
   servico?: string;
   experiencia?: string;
 }
+
+export interface Servico {
+  id?: number;
+  clienteId: number;
+  titulo: string;
+  descricao: string;
+  metragem: string;
+  categoria: string;
+  urgencia: string;
+  materiais: string;
+  endereco: string;
+  status: 'EM_ANDAMENTO' | 'CONCLUIDO';
+  valor?: number;
+  criado_em?: string;
+}
