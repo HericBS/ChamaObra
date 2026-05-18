@@ -30,5 +30,8 @@ export interface Servico {
   endereco: string;
   status: 'EM_ANDAMENTO' | 'CONCLUIDO';
   valor?: number;
+  fotos?: string[];
+  progresso?: number;
+  estagio?: number;
   criado_em?: string;
 }

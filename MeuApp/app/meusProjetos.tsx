@@ -130,30 +130,30 @@ export default function MeusProjetos() {
       </ScrollView>
 
       {/* Bottom Tab Mock */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="home-outline" size={20} color="#666" />
-          <Text style={styles.navText}>INÍCIO</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="search-outline" size={20} color="#666" />
-          <Text style={styles.navText}>EXPLORAR</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.navItem, styles.navItemActive]}>
-          <View style={styles.navCenterButton}>
-            <Ionicons name="add" size={24} color="#fff" />
-          </View>
-          <Text style={[styles.navText, { color: '#ff6600', fontWeight: 'bold' }]}>POSTAR</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="hammer-outline" size={20} color="#666" />
-          <Text style={styles.navText}>PEDIDOS</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="chatbubble-outline" size={20} color="#666" />
-          <Text style={styles.navText}>MENSAGENS</Text>
-        </TouchableOpacity>
-      </View>
+            <View style={styles.bottomNav}>
+              <TouchableOpacity style={styles.navItem} onPress={() => router.push('/homeContratante')}>
+                <Ionicons name="home-outline" size={20} color="#ff6600" />
+                <Text style={[styles.navText, { color: '#ff6600', fontWeight: 'bold' }]}>INÍCIO</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem} onPress={() => {}}>
+                <Ionicons name="search-outline" size={20} color="#666" />
+                <Text style={styles.navText}>EXPLORAR</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.navItem, styles.navItemActive]} onPress={() => router.push('/postarServico')}>
+                <View style={styles.navCenterButton}>
+                  <Ionicons name="add" size={24} color="#fff" />
+                </View>
+                <Text style={[styles.navText, { color: '#ff6600', fontWeight: 'bold' }]}>POSTAR</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem}>
+                <Ionicons name="hammer-outline" size={20} color="#666" />
+                <Text style={styles.navText}>PEDIDOS</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem} onPress={() => {}}>
+                <Ionicons name="chatbubble-outline" size={20} color="#666" />
+                <Text style={styles.navText}>MENSAGENS</Text>
+              </TouchableOpacity>
+            </View>
     </SafeAreaView>
   );
 }

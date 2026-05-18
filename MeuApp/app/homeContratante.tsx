@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Image, SafeAreaView } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { db } from '../database/database';
@@ -30,19 +30,27 @@ export default function HomeScreen() {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.mainContainer}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
 
-      {/* TOPO */}
-      <View style={styles.topBar}>
-        <Ionicons name="menu" size={24} />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Ionicons name="notifications-outline" size={22} />
-          <Image
-            source={{ uri: 'https://i.pravatar.cc/100' }}
-            style={styles.avatar}
-          />
+        <View style={styles.topBar}>
+          <TouchableOpacity onPress={() => {}}>
+            <Ionicons name="menu" size={24} color="#0a1f44" />
+          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity style={{ marginRight: 15 }}>
+              <Ionicons name="notifications-outline" size={22} color="#0a1f44" />
+            </TouchableOpacity>
+            <Image
+              source={{ uri: 'https://i.pravatar.cc/100' }}
+              style={styles.avatar}
+            />
+          </View>
         </View>
-      </View>
 
       {/* ALERTA */}
       <View style={styles.alertBox}>
@@ -70,18 +78,18 @@ export default function HomeScreen() {
       {/* CATEGORIAS */}
       <Text style={styles.sectionTitle}>Categorias</Text>
 
-      <View style={styles.categories}>
-        {['Pedreiro', 'Eletricista', 'Encanador', 'Pintor'].map((item, i) => (
-          <TouchableOpacity
-            key={i}
-            style={styles.categoryItem}
-            onPress={() => setBusca(item)}
-          >
-            <MaterialIcons name="build" size={24} />
-            <Text>{item}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+        <View style={styles.categories}>
+          {['Pedreiro', 'Eletricista', 'Encanador', 'Pintor'].map((item, i) => (
+            <TouchableOpacity
+              key={i}
+              style={styles.categoryItem}
+              onPress={() => setBusca(item)}
+            >
+              <MaterialIcons name="build" size={24} color="#0a1f44" />
+              <Text style={{ color: '#0a1f44', fontSize: 12, marginTop: 5 }}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
       {/* BUSCA */}
       <TextInput
@@ -124,22 +132,50 @@ export default function HomeScreen() {
           </View>
         </View>
       ))}
+      </ScrollView>
 
-      {/* BOTÃO FLUTUANTE */}
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => router.push('/postarServico')}
-      >
-        <Text style={{ color: '#fff', fontSize: 24 }}>+</Text>
-      </TouchableOpacity>
-
-    </ScrollView>
+      {/* Bottom Tab Mock */}
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="home-outline" size={20} color="#ff6600" />
+          <Text style={[styles.navText, { color: '#ff6600', fontWeight: 'bold' }]}>INÍCIO</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => {}}>
+          <Ionicons name="search-outline" size={20} color="#666" />
+          <Text style={styles.navText}>EXPLORAR</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.navItem, styles.navItemActive]} onPress={() => router.push('/postarServico')}>
+          <View style={styles.navCenterButton}>
+            <Ionicons name="add" size={24} color="#fff" />
+          </View>
+          <Text style={[styles.navText, { color: '#ff6600', fontWeight: 'bold' }]}>POSTAR</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/meusProjetos')}>
+          <Ionicons name="hammer-outline" size={20} color="#666" />
+          <Text style={styles.navText}>PEDIDOS</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => {}}>
+          <Ionicons name="chatbubble-outline" size={20} color="#666" />
+          <Text style={styles.navText}>MENSAGENS</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#f5f5f5', padding: 15 },
-
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  scrollContent: {
+    padding: 15,
+    paddingBottom: 100,
+  },
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -252,5 +288,45 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bottomNav: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 15,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingBottom: 30,
+  },
+  navItem: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  navItemActive: {
+    // Special style for the center button is handled via navCenterButton
+  },
+  navText: {
+    fontSize: 10,
+    color: '#666',
+    fontWeight: '600',
+  },
+  navCenterButton: {
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    backgroundColor: '#ff6600',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+    shadowColor: '#ff6600',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

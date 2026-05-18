@@ -217,6 +217,32 @@ export default function PostarServico() {
           <Text style={styles.submitButtonText}>POSTAR SERVIÇO</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Bottom Tab Mock */}
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/homeContratante')}>
+          <Ionicons name="home-outline" size={20} color="#666" />
+          <Text style={styles.navText}>INÍCIO</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => {}}>
+          <Ionicons name="search-outline" size={20} color="#666" />
+          <Text style={styles.navText}>EXPLORAR</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.navItem, { alignItems: 'center' }]} onPress={() => {}}>
+          <View style={styles.navCenterButton}>
+            <Ionicons name="add" size={24} color="#fff" />
+          </View>
+          <Text style={[styles.navText, { color: '#ff6600', fontWeight: 'bold' }]}>POSTAR</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/meusProjetos')}>
+          <Ionicons name="hammer-outline" size={20} color="#666" />
+          <Text style={styles.navText}>PEDIDOS</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => {}}>
+          <Ionicons name="chatbubble-outline" size={20} color="#666" />
+          <Text style={styles.navText}>MENSAGENS</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -445,7 +471,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 80,
     left: 0,
     right: 0,
     padding: 20,
@@ -466,5 +492,42 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  bottomNav: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 15,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingBottom: 30,
+  },
+  navItem: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  navText: {
+    fontSize: 10,
+    color: '#666',
+    fontWeight: '600',
+  },
+  navCenterButton: {
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    backgroundColor: '#ff6600',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+    shadowColor: '#ff6600',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
