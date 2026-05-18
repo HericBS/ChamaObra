@@ -9,7 +9,10 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
+import { useRouter } from 'expo-router';
+
 export default function ExplorarScreen() {
+  const router = useRouter();
   return (
     <ScrollView style={styles.container}>
 
@@ -106,7 +109,7 @@ export default function ExplorarScreen() {
             </Text>
 
             <View style={styles.actions}>
-              <TouchableOpacity style={styles.detailBtn}>
+              <TouchableOpacity style={styles.detailBtn} onPress={() => router.push({ pathname: '/servicoDetalhe', params: { servicoId: (i + 1).toString() } })}>
                 <Text>Detalhes</Text>
               </TouchableOpacity>
 

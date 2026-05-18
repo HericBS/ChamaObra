@@ -28,6 +28,6 @@ export const servicoRepository = {
   },
 
   getByStatus: (clienteId: number, status: string) => {
-    return db.getAllSync(`SELECT * FROM servicos WHERE clienteId = ? AND status = ? ORDER BY criado_em DESC`, [clienteId]);
+    return db.getAllSync(`SELECT * FROM servicos WHERE clienteId = ? AND status = ? ORDER BY criado_em DESC`, [clienteId, status]);
   },
 };

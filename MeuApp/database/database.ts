@@ -31,6 +31,22 @@ export const initDB = () => {
     );
   `);
 
+  // tabela de propostas
+  db.execSync(`
+    CREATE TABLE IF NOT EXISTS propostas (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      servicoId INTEGER,
+      prestadorId INTEGER,
+      valor REAL,
+      prazo TEXT,
+      descricao TEXT,
+      status TEXT DEFAULT 'PENDENTE',
+      criado_em TEXT,
+      FOREIGN KEY(servicoId) REFERENCES servicos(id),
+      FOREIGN KEY(prestadorId) REFERENCES usuarios(id)
+    );
+  `);
+
   // pegar colunas existentes
   const colunas = db.getAllSync(`PRAGMA table_info(usuarios)`);
 

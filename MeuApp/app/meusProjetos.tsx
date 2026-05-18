@@ -95,7 +95,7 @@ export default function MeusProjetos() {
                     <Text style={styles.valueLabel}>LOCALIZAÇÃO</Text>
                     <Text style={styles.valueText}>{project.endereco}</Text>
 
-                    <TouchableOpacity style={styles.detailsButton}>
+                    <TouchableOpacity style={styles.detailsButton} onPress={() => router.push({ pathname: '/servicoDetalhe', params: { servicoId: project.id.toString() } })}>
                       <Text style={styles.detailsButtonText}>VER DETALHES</Text>
                     </TouchableOpacity>
                   </View>
