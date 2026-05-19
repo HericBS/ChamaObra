@@ -151,16 +151,42 @@ export default function ServicoDetalheScreen() {
             </View>
           </View>
 
-          {propostas.map((p) => (
-            <TouchableOpacity key={p.id} style={styles.propostaCard}>
-              <Image source={{ uri: p.imagem || 'https://i.pravatar.cc/100' }} style={styles.propostaAvatar} />
-              <View style={styles.propostaInfo}>
-                <Text style={styles.propostaNome}>{p.prestadorNome}</Text>
-                <Text style={styles.propostaRating}>⭐ 4.9 (124 avaliações)</Text>
-              </View>
-              <Text style={styles.propostaValor}>{formatReais(p.valor)}</Text>
-            </TouchableOpacity>
-          ))}
+          {propostas.length === 0 ? (
+            <View style={styles.emptyPropostas}>
+              <Ionicons name="mail-outline" size={40} color="#ddd" />
+              <Text style={styles.emptyText}>Nenhuma proposta recebida ainda</Text>
+              <Text style={styles.emptySubtext}>Aguarde os prestadores enviarem suas propostas</Text>
+            </View>
+          ) : (
+            propostas.map((p) => (
+              <TouchableOpacity
+                key={p.id}
+                style={styles.propostaCard}
+                onPress={() => router.push({ pathname: '/aceitarProposta', params: { propostaId: p.id.toString() } })}
+              >
+                <Image source={{ uri: 'https://i.pravatar.cc/100' }} style={styles.propostaAvatar} />
+                <View style={styles.propostaInfo}>
+                  <Text style={styles.propostaNome}>{p.prestadorNome || 'Prestador'}</Text>
+                  <Text style={styles.propostaRating}>⭐ 4.9 (124 avaliações)</Text>
+                  <View style={styles.propostaDetails}>
+                    <View style={styles.prazoBadge}>
+                      <Ionicons name="time-outline" size={12} color="#666" />
+                      <Text style={styles.prazoText}>{p.prazo}</Text>
+                    </View>
+                  </View>
+                  {p.descricao && (
+                    <Text style={styles.propostaDesc} numberOfLines={2}>{p.descricao}</Text>
+                  )}
+                </View>
+                <View style={styles.propostaRight}>
+                  <Text style={styles.propostaValor}>{formatReais(p.valor)}</Text>
+                  <View style={[styles.statusBadgeProposta, p.status === 'PENDENTE' && styles.statusPendente]}>
+                    <Text style={styles.statusBadgeText}>{p.status}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))
+          )}
 
           <TouchableOpacity style={styles.primaryBtn}>
             <Text style={styles.primaryBtnText}>VER TODAS AS PROPOSTAS</Text>
@@ -427,9 +453,68 @@ const styles = StyleSheet.create({
     color: '#999',
   },
   propostaValor: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#ff6600',
+    marginBottom: 4,
+  },
+  propostaRight: {
+    alignItems: 'flex-end',
+  },
+  propostaDetails: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  prazoBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: '#f5f5f5',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+  },
+  prazoText: {
+    fontSize: 11,
+    color: '#666',
+  },
+  propostaDesc: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4,
+    lineHeight: 16,
+  },
+  statusBadgeProposta: {
+    backgroundColor: '#e8f5e9',
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+  },
+  statusPendente: {
+    backgroundColor: '#fff3e0',
+  },
+  statusBadgeText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#666',
+  },
+  emptyPropostas: {
+    alignItems: 'center',
+    paddingVertical: 30,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 12,
+    marginBottom: 15,
+  },
+  emptyText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#666',
+    marginTop: 10,
+  },
+  emptySubtext: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 4,
   },
   primaryBtn: {
     backgroundColor: '#ff6600',

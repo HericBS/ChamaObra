@@ -34,5 +34,15 @@ export const propostaRepository = {
 
   updateStatus: (id: number, status: string) => {
     return db.runSync(`UPDATE propostas SET status = ? WHERE id = ?`, [status, id]);
-  }
+  },
+
+  getById: (id: number) => {
+    return db.getAllSync(
+      `SELECT p.*, u.nome as prestadorNome, u.servico as prestadorServico, u.experiencia as prestadorExperiencia
+       FROM propostas p
+       JOIN usuarios u ON p.prestadorId = u.id
+       WHERE p.id = ?`,
+      [id]
+    );
+  },
 };

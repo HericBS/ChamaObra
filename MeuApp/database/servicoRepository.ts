@@ -30,4 +30,12 @@ export const servicoRepository = {
   getByStatus: (clienteId: number, status: string) => {
     return db.getAllSync(`SELECT * FROM servicos WHERE clienteId = ? AND status = ? ORDER BY criado_em DESC`, [clienteId, status]);
   },
+
+  getAll: () => {
+    return db.getAllSync(`SELECT * FROM servicos ORDER BY criado_em DESC`);
+  },
+
+  getAllOpen: () => {
+    return db.getAllSync(`SELECT * FROM servicos WHERE status = 'EM_ANDAMENTO' ORDER BY criado_em DESC`);
+  },
 };
